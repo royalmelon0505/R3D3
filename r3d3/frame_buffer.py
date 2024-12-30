@@ -217,6 +217,7 @@ class FrameBuffer:
             idx = t - 1
             images = self.images[idx] / 255.
             intrinsics = self.intrinsics[idx, :, 0] * 8
+            # print(images.shape)
             disp_up, disp = self.mono_from_input(images, intrinsics)
             if disp_up is not None and disp is not None:
                 self.disps_up[idx] = disp_up * self.scale

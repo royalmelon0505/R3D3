@@ -16,6 +16,10 @@ from evaluation_utils.dataloader_wrapper import setup_dataloaders, SceneIterator
 from vidar.utils.setup import setup_metrics
 from r3d3.utils import pose_matrix_to_quaternion
 
+import cv2
+import numpy as np
+from evaluation_utils.pcd_vis import create_point_cloud_from_rgb_depth,colorize_depth_maps
+from PIL import Image
 
 def load_completion_network(cfg: Config) -> DepthCompletion:
     """ Loads completion network with vidar framework
@@ -89,7 +93,7 @@ class Evaluator:
             n_cams=n_cams,
             **{key.replace("r3d3_", ""): val for key, val in vars(self.args).items() if key.startswith("r3d3_")}
         )
-
+        print("R3D3 init finish")
         for timestamp, sample in enumerate(tqdm(sample_iterator, desc='Sample', position=0, leave=True)):
             pose = SE3(pose_matrix_to_quaternion(sample['pose'][0][0]).cuda())
             pose = pose.inv()
@@ -97,7 +101,10 @@ class Evaluator:
 
             intrinsics = sample['intrinsics'][0][0, :, [0, 1, 0, 1], [0, 1, 2, 2]]
             is_keyframe = 'depth' in sample and sample['depth'][0].max() > 0.
-
+            print(sample['pose'][0][0])
+            # print(intrinsics)
+            import pdb ; pdb.set_trace()
+            # print(sample['depth'][0].shape)
             output = r3d3.track(
                 tstamp=float(timestamp),
                 image=(sample['rgb'][0][0] * 255).type(torch.uint8).cuda(),
@@ -144,6 +151,7 @@ class Evaluator:
                         }
                     )
             if self.prediction_data_path is not None and output['disp_up'] is not None and is_keyframe:
+                cam_i=0
                 for cam, filename in enumerate(sample['filename'][0]):
                     write_npz(
                         os.path.join(
@@ -157,6 +165,36 @@ class Evaluator:
                             't': float(timestamp)
                         }
                     )
+
+                    pred_depth = (1.0 / output['disp_up'][cam].numpy())
+                    rgb = np.transpose(sample['rgb'][0][0][cam].numpy(),(1,2,0)) 
+                    r,g,b = cv2.split(rgb)
+                    bgr = cv2.merge([b,g,r])
+
+                    vis_root = "/gpfs/public-shared/fileset-groups/crosshair/guojiazhe/code/r3d3/data/pred_data_path/vis_2"
+                    os.makedirs(os.path.join(vis_root,filename[0]),exist_ok=True)
+                    cv2.imwrite(os.path.join(vis_root,filename[0],'rgb.png'),bgr*255)
+
+                    im_color = colorize_depth_maps(pred_depth,0.1,80)
+                    # print(im_color.shape)
+                    # im_color=cv2.applyColorMap(cv2.convertScaleAbs(pred_depth,alpha=3),cv2.COLORMAP_MAGMA)
+                    #convert to mat png
+                    im=Image.fromarray(np.uint8(im_color[0]*255))
+                    im.save(os.path.join(vis_root,filename[0],'depth.png'))
+                    
+                    s_depth = sample["depth"][0][0][cam].numpy()
+                    
+                    np.save(os.path.join(vis_root,filename[0],'depth_sparse.npy'),s_depth)
+                    # sv_depth=cv2.split(s_depth)[0]
+                    # sv_depth[sv_depth>80]=0
+                    # sv_depth=sv_depth/80
+                    # print(s_depth.shape)
+                    # cv2.imwrite(os.path.join(vis_root,filename[0],'depth_sparse.png'),sv_depth[0]*255)
+
+                    # print(intrinsics[cam].numpy())
+                    create_point_cloud_from_rgb_depth(rgb*255,pred_depth,intrinsics[cam].numpy().tolist(),os.path.join(vis_root,filename[0],'out_sv.pcd'))
+                    # print(sample['rgb'][0].shape,pred_depth.shape)
+                    # cam_i+=1
 
         # Terminate
         del r3d3

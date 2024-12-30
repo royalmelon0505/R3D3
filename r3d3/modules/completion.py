@@ -196,6 +196,10 @@ class CompletionDecoder(nn.Module):
             x = [upsample(x)]
             if self.use_skips and i > 0:
                 x += [input_features[i - 1]]
+
+            # for test_len in range(len(x)):
+            #     print(x[test_len].shape)
+
             x = torch.cat(x, 1)
             x = self.convs[("upconv", i, 1)](x)
             if i in self.scales:
@@ -304,5 +308,7 @@ class DepthCompletion(nn.Module):
 
         # - Inference -
         features = self.encoder(image, disps, conf, disps_up, conf_up)
+        # for test_i in range(len(features)):
+        #     print(features[test_i].shape)
         outputs = self.decoder(input_features=features, focal_length=focal_length if self.do_focal_scaling else None)
         return outputs

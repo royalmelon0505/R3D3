@@ -1,0 +1,12 @@
+# ninja log v5
+0	27275	1734681503417164584	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/src/r3d3.o	2dadf800a95fd371
+0	250389	1734681726508342305	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/src/correlation_kernels.o	1c045c21efc92cfe
+0	250668	1734681726799273645	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/src/altcorr_kernel.o	30b31ad2b549a719
+0	276698	1734681752812373288	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/src/r3d3_kernels.o	a1234be3efc8ae8
+6	21780	1734681775578742772	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/thirdparty/lietorch/lietorch/src/lietorch.o	698f140252209d30
+6	50629	1734681804418434454	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/thirdparty/lietorch/lietorch/src/lietorch_cpu.o	f3a20605f6c6bb85
+6	752518	1734682506207676781	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/thirdparty/lietorch/lietorch/src/lietorch_gpu.o	eef4a02eed65135b
+3913	22358	1735306691499779420	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/src/r3d3.o	2dadf800a95fd371
+51	194854	1735309933874428797	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/src/altcorr_kernel.o	30b31ad2b549a719
+51	195698	1735309934720688297	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/src/correlation_kernels.o	1c045c21efc92cfe
+52	212977	1735309951993547091	/gpfs/shared_files/crosshair/guojiazhe/code/r3d3/build/temp.linux-x86_64-cpython-39/src/r3d3_kernels.o	a1234be3efc8ae8

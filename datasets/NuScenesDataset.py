@@ -119,9 +119,11 @@ class NuScenesDataset(BaseDataset, ABC):
         )
 
         masks = {}
-        for cam_file in os.listdir(os.path.join(self.path, 'mask')):
+        mask_path_root = "/gpfs/public-shared/fileset-groups/crosshair/guojiazhe/code/r3d3/data/datasets/"
+        # for cam_file in os.listdir(os.path.join(self.path, 'mask')):
+        for cam_file in os.listdir(os.path.join(mask_path_root, 'mask')):
             cam = cam_file.split('.')[0]
-            masks[cam] = NuScenesDataset.get_mask(os.path.join(self.path, 'mask', cam_file))
+            masks[cam] = NuScenesDataset.get_mask(os.path.join(mask_path_root, 'mask', cam_file))
         # Gather dataset
         for first_sample_token, scene_name in tqdm(zip(df.first_sample_token.values, df.scene_name.values)):
             frames, groups = parse_sequence(data, self.keyframes_only, (first_sample_token, scene_name))
@@ -134,6 +136,7 @@ class NuScenesDataset(BaseDataset, ABC):
                     f.intrinsics.focal[0], f.intrinsics.focal[1],
                     f.intrinsics.center[0], f.intrinsics.center[1]
                 ])
+                # print(intrinsics)
                 # Due to bug in training of compl-network.
                 intrinsics[[1, 3]] *= 0.964285  # Remove line, delete dataset cache and retrain for better results!
 

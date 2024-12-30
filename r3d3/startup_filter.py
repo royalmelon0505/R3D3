@@ -55,7 +55,7 @@ class StartupFilter:
 
         self.hidden_init, self.ctx_feat, self.corr_feat = None, None, None
 
-    @torch.cuda.amp.autocast(enabled=True)
+    @torch.cuda.amp.autocast(enabled=True) 
     def __context_encoder(self, image: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         """ Features for GRU
         Args:

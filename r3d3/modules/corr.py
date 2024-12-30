@@ -12,6 +12,7 @@ class CorrSampler(torch.autograd.Function):
     def forward(ctx, volume, coords, radius):
         ctx.save_for_backward(volume, coords)
         ctx.radius = radius
+        print(volume.shape,coords.shape)
         corr, = r3d3_backends.corr_index_forward(volume, coords, radius)
         return corr
 

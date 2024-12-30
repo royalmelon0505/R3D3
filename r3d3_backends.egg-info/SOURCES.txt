@@ -1,0 +1,11 @@
+LICENSE
+README.md
+setup.py
+r3d3_backends.egg-info/PKG-INFO
+r3d3_backends.egg-info/SOURCES.txt
+r3d3_backends.egg-info/dependency_links.txt
+r3d3_backends.egg-info/top_level.txt
+src/altcorr_kernel.cu
+src/correlation_kernels.cu
+src/r3d3.cpp
+src/r3d3_kernels.cu

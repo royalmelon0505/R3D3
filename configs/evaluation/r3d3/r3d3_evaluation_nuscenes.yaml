@@ -13,7 +13,7 @@ datasets:
     validation:
         root: [ datasets ]
         name: [ NuScenes ]
-        path: [ /media/datadrive2/nuScenes ]
+        path: [ data/datasets/nuScenes ]
         split: [ val ]
         version: [v1.0-trainval]
         augmentation:
